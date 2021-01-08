@@ -9,7 +9,8 @@ import router from './router'
 
 axios.defaults.withCredentials = true
 Vue.config.productionTip = false
-Vue.use(ElementUI, axios);
+Vue.prototype.$axios = axios
+Vue.use(ElementUI);
 new Vue({
   router,
   store,

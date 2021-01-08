@@ -41,7 +41,7 @@ export default {
   mounted() {},
   methods: {
     login() {
-      this.axios
+      this.$axios
         .post("http://localhost:8080/user/login", {
           userId: this.userId,
           password: this.password,

@@ -84,7 +84,7 @@ export default {
   mounted() {
     console.log(this.$store.getters.getStorage.user.userId);
     var userId = this.$store.getters.getStorage.user.userId;
-    this.axios
+    this.$axios
       .get(
         "http://localhost:8080/shopCart/getShopCartByUser?userId=" + userId
       )
