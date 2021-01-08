@@ -9,8 +9,8 @@
       </div>
       <div class="inter2">
         <div class="inter21">
-          <a href=""><img src="images/png2.png" alt="" /></a>
-          <a href="" class="small"><img src="images/png2.png" alt="" /></a>
+          <a href=""><img src="../images/png2.png" alt="" /></a>
+          <a href="" class="small"><img src="../images/png2.png" alt="" /></a>
         </div>
         <div class="inter22">
           <h1>简约时尚水泥花瓶</h1>
