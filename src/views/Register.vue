@@ -153,7 +153,21 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            axios.post("http://localhost:8080/user/register",{
+              userId: this.ruleForm.userId,
+              userName: this.ruleForm.userName,
+              firstPassword: this.ruleForm.pass,
+              secondPassword: this.ruleForm.checkPass
+            }).then((res) => {
+              console.log(res.data);
+              if (res.data.code == 200) {
+                // this.$store.commit("$_setStorage", { user: res.data.data });
+                this.$router.go(-1);
+              } else {
+                console.log(res.data.error)
+                alert(res.data.error);
+              }
+            });
           } else {
             console.log('error submit!!');
             return false;
