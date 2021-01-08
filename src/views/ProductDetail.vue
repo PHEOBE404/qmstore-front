@@ -44,5 +44,6 @@
 export default {
   name: "ProductDetail",
   components: {},
+  
 };
 </script>

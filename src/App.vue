@@ -29,7 +29,7 @@
     <div class="outer5">
         <div class="inter1">
             <div class="left">
-                <a href=""><img src="images/logo.png" alt=""></a>
+                <a href=""><img src="./images/logo.png" alt=""></a>
                 <p>青竹良品原创生活类电商品牌，秉承一贯的严谨态度，我们深入世界各地，从源头全程严格把控商品生产环节，力求帮消费者甄选到最优质的商品，全线采用天然原材料，控制甲醛低量无害，采用进口工艺，国际生产线不断优化，食材保证核心原产地新鲜直供，让你享受品质生活</p>
             </div>
             <div class="center">
@@ -56,8 +56,8 @@
                 </dl>
             </div>
             <div class="right">
-                <img src="images/weixin.png" alt="">
-                <img src="images/weibo.png" alt="">
+                <img src="./images/weixin.png" alt="">
+                <img src="./images/weibo.png" alt="">
                 <span>微信公众号</span>
                 <span>微博公众号</span>
             </div>
@@ -81,5 +81,10 @@
 @import "css/青竹4.css";
 @import "css/青竹5.css";
 @import "css/青竹6.css";
-
+@import "css/查看详情.css";
+@import "css/购物车.css";
+@import "css/青竹注册.css";
+@import "css/青竹登录.css";
+@import "css/查看所有类别.css";
+@import "css/忘记密码.css";
 </style>

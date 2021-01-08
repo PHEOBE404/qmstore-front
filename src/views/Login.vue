@@ -31,7 +31,3 @@ export default {
   components: {},
 };
 </script>
-<style scoped>
-
-@import "../css/青竹登录.css";
-</style>

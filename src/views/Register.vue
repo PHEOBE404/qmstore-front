@@ -39,6 +39,3 @@ export default {
   components: {},
 };
 </script>
-<style scoped>
-@import "../css/青竹注册.css";
-</style>
