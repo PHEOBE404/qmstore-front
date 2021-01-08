@@ -77,14 +77,14 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
-import axios from "axios";
+
 export default {
   name: "Cart",
   components: {},
   mounted() {
     console.log(this.$store.getters.getStorage.user.userId);
     var userId = this.$store.getters.getStorage.user.userId;
-    axios
+    this.axios
       .get(
         "http://localhost:8080/shopCart/getShopCartByUser?userId=" + userId
       )

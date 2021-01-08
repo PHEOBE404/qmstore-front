@@ -56,7 +56,6 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
-import axios from "axios";
 export default {
   name: "Register",
   components: {},
@@ -153,7 +152,7 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            axios.post("http://localhost:8080/user/register",{
+            this.axios.post("http://localhost:8080/user/register",{
               userId: this.ruleForm.userId,
               userName: this.ruleForm.userName,
               firstPassword: this.ruleForm.pass,

@@ -27,7 +27,7 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
-import axios from "axios";
+
 export default {
   name: "Login",
   components: {},
@@ -41,7 +41,7 @@ export default {
   mounted() {},
   methods: {
     login() {
-      axios
+      this.axios
         .post("http://localhost:8080/user/login", {
           userId: this.userId,
           password: this.password,
