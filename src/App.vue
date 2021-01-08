@@ -15,15 +15,16 @@
             <router-link to="/login">登录</router-link>
             <span>|</span>
             <router-link to="/register">注册</router-link>
-            <router-link to="/cart"
-              ><i class="icon iconfont icon-gouwuche" id="shop"></i
-              >0</router-link
-            >
+
           </span>
           <span v-if="this.$store.getters.getStorage != null">
             <span></span>
             <router-link to="/user">个人中心</router-link>
             <el-button type="danger" round @click="logout">退出</el-button>
+            <router-link to="/cart"
+              ><i class="icon iconfont icon-gouwuche" id="shop"></i
+              >0</router-link
+            >
           </span>
         </div>
         <div class="shop">
