@@ -52,11 +52,11 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 import axios from "axios";
 export default {
-  el: "#cart",
   name: "Cart",
   components: {},
     mounted() {
-    axios.get("http://localhost:8080/shop_cart/all").then((res) => {
+    console.log(this.$store.user);
+    axios.get("http://localhost:8080/shopCart/getShopCartByUser").then((res) => {
       this.splice.splice(0, this.data.length);
       for (let i = 0; i < res.data.length; i++) {
         this.items = [
