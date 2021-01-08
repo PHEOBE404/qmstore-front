@@ -55,7 +55,7 @@ export default {
   name: "Cart",
   components: {},
     mounted() {
-    console.log(this.$store.user);
+    console.log(this.$store.getters.getStorage);
     axios.get("http://localhost:8080/shopCart/getShopCartByUser").then((res) => {
       this.splice.splice(0, this.data.length);
       for (let i = 0; i < res.data.length; i++) {

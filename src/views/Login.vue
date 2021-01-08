@@ -3,19 +3,22 @@
     <div class="outer6">
       <h4>登录</h4>
 
-      <div class="div">
-        <input type="text" name="username" v-model="userId" />
-        <span id="s1">手机/邮箱/用户名</span>
-      </div>
-      <div class="div">
-        <input type="password" name="password" v-model="password" />
-        <span id="s2">登录密码</span>
-      </div>
-      <div class="inter1">
-        <a href="./青竹注册.html">注册</a>
-        <a href="./忘记密码.html" class="right">忘记密码</a>
-      </div>
-      <input type="submit" value="登录" id="submit" @click="login" />
+      <el-input v-model="userId" placeholder="请输入用户id"
+        ><template slot="prepend">用户名:</template></el-input
+      >
+      <el-input
+        placeholder="请输入密码"
+        v-model="password"
+        show-password
+        style="margin-top: 15px"
+        ><template slot="prepend">密码:</template></el-input
+      >
+      <el-button
+        type="primary"
+        @click="login"
+        style="margin-top: 15px; float: right"
+        >登录</el-button
+      >
       <div></div>
     </div>
   </div>
@@ -44,9 +47,13 @@ export default {
           password: this.password,
         })
         .then((res) => {
-          console.log(res.data.data);
-          this.$store.commit("$_setStorage", { user: res.data.data });
-          this.$router.go(-1);
+          console.log(res.data);
+          if (res.data.data != null) {
+            this.$store.commit("$_setStorage", { user: res.data.data });
+            this.$router.go(-1);
+          } else {
+            alert("用户名或密码错误！");
+          }
         });
     },
   },
