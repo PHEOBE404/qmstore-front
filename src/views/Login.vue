@@ -42,7 +42,7 @@ export default {
   methods: {
     login() {
       this.$axios
-        .post("http://localhost:8080/user/login", {
+        .post("user/login", {
           userId: this.userId,
           password: this.password,
         })

@@ -44,6 +44,14 @@
 export default {
   name: "ProductDetail",
   components: {},
-  
+  created() {
+    this.$http.post
+  },
+  mounted() {
+    console.log("log1"+this.$route.path)
+    console.log("log2" + this.$route.params);
+    console.log("log3" + window.location.href );
+    console.log("log4"+ this.$route.query.id);
+  },
 };
 </script>

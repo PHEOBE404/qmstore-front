@@ -86,7 +86,7 @@ export default {
     var userId = this.$store.getters.getStorage.user.userId;
     this.$axios
       .get(
-        "http://localhost:8080/shopCart/getShopCartByUser?userId=" + userId
+        "shopCart/getShopCartByUser?userId=" + userId
       )
       .then((res) => {
         console.log(res.data)
