@@ -213,7 +213,7 @@ export default {
       this.items.splice(index, 1);
       this.calculateAll();
     },
-    generateOrder() {
+    async generateOrder() {
       this.$parent.orders = [];
       var userId = this.$store.getters.getStorage.user.userId;
       for (let i = 0; i < this.items.length; i++) {
@@ -231,7 +231,7 @@ export default {
               "goodsAmount": goodsAmount,
           }
           console.log(order);
-          this.$axios
+          await this.$axios
             .post("/order_state/insertOrderDetail", order)
             .then((res) => {
               console.log(res.data);

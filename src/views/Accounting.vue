@@ -1,10 +1,10 @@
 <template>
-  <div class="home" style="padding-left:100px;padding-right:100px;padding-top:64px;padding-bottom:64px;">
+  <div class="home" style="margin-left:100px;margin-right:100px;margin-top:100px;margin-bottom:32px;background:white;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius:8px;">
 
     <el-table
       :data="orders"
       stripe
-      style="width: 100%;margin-top:100px;">
+      style="width: 95%;">
       <el-table-column
         
         label="预览"
@@ -42,14 +42,12 @@
       </el-table-column>
     </el-table>
 
-  <el-row>
+  <el-row style="margin:16px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)" >
+    <span style="color:#409EFF;font-size:20px;margin:16px;">收货地址：</span>
     <el-col :span="24">
-      <div class="grid-content bg-purple-dark">
-
-            <div class="grid-content bg-purple-dark">
+      <div class="grid-content">
+            <div class="grid-content" style="margin:16px;">
               <el-select v-model="value" placeholder="请选择" >
-
-
                 <el-option
                   selected="selected"
                   label="新建地址"
@@ -69,28 +67,34 @@
               </el-select>
             </div>
 
-            <el-row v-if="value==''">
+            <el-row v-if="value==''" style="border-style:solid;border-width:1px;border-color:#DCDFE6;margin:24px;">
               <el-col :span="24">
                 <div class="grid-content bg-purple-dark">
 
                   <el-row :gutter="20">
                     <el-col :span="6">
                       <div class="grid-content bg-purple">
-                        <el-input v-model="newAddress.newName" placeholder="请输入收件人姓名"></el-input>
+                        <el-input v-model="newAddress.newName" placeholder="请输入收件人姓名" style="margin:16px;"></el-input>
                       </div>
                     </el-col>
                     <el-col :span="6">
                       <div class="grid-content bg-purple">
-                        <el-input v-model="newAddress.newPhone" placeholder="请输入手机号"></el-input>
+                        <el-input v-model="newAddress.newPhone" placeholder="请输入手机号" style="margin:16px;"></el-input>
                       </div>
                     </el-col>
                   </el-row>
-                  <el-input
-                    type="textarea"
-                    :autosize="{ minRows: 2, maxRows: 4}"
-                    placeholder="请输入地址"
-                    v-model="newAddress.address">
-                  </el-input>
+                  <el-row>
+                    <el-col :span="12">
+                      <div class="grid-content bg-purple-dark">
+                        <el-input
+                        type="textarea"
+                          placeholder="请输入地址"
+                          v-model="newAddress.address" style="margin:16px;">
+                        </el-input>
+                      </div>
+                    </el-col>
+                  </el-row>
+
                 </div>
               </el-col>
             </el-row>
@@ -102,8 +106,8 @@
   <el-row>
     <el-col :span="24">
       <div class="grid-content bg-purple-dark">
-        <span>总金额：{{totalAmount}}</span>
-        <el-button type="danger" style="float:right;">支 付</el-button>
+        <!-- <span style="vertical-align:center;">总金额：{{totalAmount}}</span> -->
+        <el-button type="danger" style="float:right;margin-right:16px;margin-bottom:16px;" @click="payment">支 付</el-button>
       </div>
     </el-col>
   </el-row>
@@ -145,8 +149,9 @@ export default {
           count:this.$parent.orders[i].goodsNum,
           total:this.$parent.orders[i].goodsAmount
         }
+        console.log("订单");
+        console.log(order);
         this.orders=[...this.orders,order];
-
       });
 
 
@@ -169,6 +174,9 @@ export default {
     };
   },
   methods:{
+    payment(){
+
+    }
   }
 };
 </script>
