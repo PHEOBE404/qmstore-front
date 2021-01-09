@@ -94,6 +94,9 @@ export default {
         console.log(res.data);
       });
       this.$store.commit("$_removeStorage");
+      this.$router.push({
+        path:"/"
+      });
     },
   },
 };

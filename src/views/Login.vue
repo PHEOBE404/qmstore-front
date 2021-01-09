@@ -52,7 +52,9 @@ export default {
             
             this.$store.commit("$_setStorage", { user: res.data.data });
             // this.$parent.userId = this.$store.getters.getStorage.user.userId;
-            this.$router.go(-1);
+            this.$router.push({
+              path:"/"
+            });
           } else {
             alert("用户名或密码错误！");
           }

@@ -222,6 +222,7 @@ export default {
           var goodsNum = this.items[i].count;
           var goodsPrice = this.items[i].price;
           var goodsAmount = goodsNum * goodsPrice * this.items[i].discount;
+          console.log(this.items[i].discount);
           let order = {
               "userId": userId,
               "goodsId": goodsId,
@@ -233,7 +234,7 @@ export default {
           this.$axios
             .post("/order_state/insertOrderDetail", order)
             .then((res) => {
-              console.log(res.data.data);
+              console.log(res.data);
               this.$parent.orders = [...this.$parent.orders, res.data.data];
             });
         }
