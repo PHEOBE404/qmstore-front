@@ -49,7 +49,9 @@ export default {
         .then((res) => {
           console.log(res.data);
           if (res.data.data != null) {
+            
             this.$store.commit("$_setStorage", { user: res.data.data });
+            // this.$parent.userId = this.$store.getters.getStorage.user.userId;
             this.$router.go(-1);
           } else {
             alert("用户名或密码错误！");
