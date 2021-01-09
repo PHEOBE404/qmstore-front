@@ -1,7 +1,8 @@
 <template>
   <div class="home">
-        <div class="outer0">
-        <ul class="imgList">
+        <!-- <div class="outer0"> -->
+
+        <!-- <ul class="imgList">
             <li style="z-index:1;"><a  href=""><img src="../images/start.png" alt=""></a></li>
             <li><a  href=""><img src="../images/start1.png" alt=""></a></li>
             <li ><a  href=""><img src="../images/start2.png" alt=""></a></li>
@@ -10,44 +11,30 @@
             <span class="active"></span>
             <span></span>
             <span></span>
-        </div>
-    </div>
+        </div> -->
+
+         <div class="block " style="text-align: center; margin-top:140px">
+            <el-carousel height="300px" type="card" :interval="2000">
+            <el-carousel-item v-for="item in carouselList" :key="item.goodsId">
+                <!-- <h3 class="small">{{ item }}</h3> -->
+            <router-link :to="'/detail?id='+ item.goodsId"><img :src= item.picUrl></router-link>
+            </el-carousel-item>
+            </el-carousel>
+            </div>
+        <!-- </div> -->
     <div class="outer1">
-        <a href="" class="a1">新品推荐，精心挑选</a>
+        <a href="" class="a1">销量巅峰，精心挑选</a>
         <a href="" class="a2"><span >家居必备实用小单品</span></a>
         <div class="inter1">
-            <a href="javascript:void(0)" class="zuo"><i class="icon iconfont icon-pc-zuo"></i></a>
-            <a href="javascript:void(0)" class="you"><i class="icon iconfont icon-pc-you"></i></a>
+
             <div class="bbb">
                 <ul>
-                    <li><a href=""><img src="../images/png11.png" alt="" title="便携简约清扫扫帚"></a>
-                        <a href=""><p>便携简约清扫扫帚</p></a>
-                        <a href="" ><span>¥580.00</span></a>
+                    <li v-for="item in bestSale" :key="item.goodsId">
+                         <router-link :to="'/detail?id='+ item.goodsId"><img :src= item.picUrl></router-link>
+                          <router-link :to="'/detail?id='+ item.goodsId"><p>{{item.goodsName}}</p> </router-link>
+                       <span>¥{{item.goodsPrice}}</span>
                     </li>
-                    <li><a href=""><img src="../images/png12.png" alt="" title="简约多拼接彩色木制积木"></a>
-                        <a href=""><p>简约多拼接彩色木制积木</p></a>
-                        <a href=""><span>¥300.00</span></a>
-                    </li>
-                    <li><a href=""><img src="../images/png3.png" alt="" title="黑桃自然花香蜡烛"></a>
-                        <a href=""><p>黑桃自然花香蜡烛</p></a>
-                        <a href=""><span>¥580.00</span></a>
-                    </li>
-                    <li><a href=""><img src="../images/png2.png" alt="" title="简约时尚水泥花瓶"></a>
-                        <a href=""><p>简约时尚水泥花瓶</p></a>
-                        <a href=""><span>¥450.00</span></a>
-                    </li>
-                    <li><a href=""><img src="../images/png13.png" alt="" title="简约木制餐盘"></a>
-                        <a href=""><p>简约木制餐盘</p></a>
-                        <a href=""><span>¥300.00</span></a>
-                    </li>
-                    <li><a href=""><img src="../images/png14.png" alt="" title="不锈钢咖啡水壶"></a>
-                        <a href=""><p>不锈钢咖啡水壶</p></a>
-                        <a href=""><span>¥400.00</span></a>
-                    </li>
-                    <li><a href=""><img src="../images/png15.png" alt="" title="经典系列计算机"></a>
-                        <a href=""><p>经典系列计算机</p></a>
-                        <a href=""><span>¥580.00</span></a>
-                    </li>
+
                 </ul>
             </div>
         </div>
@@ -270,6 +257,27 @@ export default {
   name: 'Home',
   components: {
     
+  },
+  data() {
+      return {
+          carouselList :[],
+          bestSale: []
+      }
+  },
+  created () {
+      this.$axios.get('banner_goods/all')
+      .then((res) => {
+          this.carouselList = res.data
+        //   console.log(res)
+      })
+
+      this.$axios.get('goods_detail/bestSale')
+      .then((res) => {
+          this.bestSale = res.data.data
+                              console.log(this.bestSale)
+
+          
+      })
   }
 }
 </script>
