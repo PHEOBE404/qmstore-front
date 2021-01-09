@@ -23,11 +23,12 @@
               class="check"
               v-model="item.checked"
               v-on:click="calculateAll(index)"
-            /><img v-bind:src="item.img" alt="" />
-            <span class="s1">{{ item.name }}</span
-            ><span class="money">¥</span>
-            <span class="price">{{ item.price }}</span
-            ><input
+            />
+            <img v-bind:src="item.img" alt="" />
+            <span class="s1">{{ item.name }}</span>
+            <span class="money">¥</span>
+            <span class="price">{{ item.price }}</span>
+            <input
               type="button"
               value="-"
               class="sub"
@@ -58,8 +59,7 @@
       <div class="inter31">
         <div class="last">
           <!-- TODO 下面这个链接需要增加订单生成再跳转 -->
-          <router-link to="/accounting">确认结算</router-link>
-          
+          <el-button type="danger" @click="generateOrder">确认结算</el-button>
         </div>
         <!-- <input type="checkbox" class="checkAll"><span class="s1">全选</span>
                 <span class="ss1">删除</span><span class="ss2">清除下架商品</span> -->
@@ -67,7 +67,9 @@
           已选<span class="totalCount">{{ count }}</span
           >件 合计(不含运费) : <span class="totalPrice">¥{{ total }}</span
           >元<br />
-          <span class="ss3">已优惠 : <span class="ss4"> ¥0</span></span>
+          <span class="ss3"
+            >已优惠 : <span class="ss4"> ¥{{ discount }}</span></span
+          >
         </div>
       </div>
     </div>
@@ -85,14 +87,30 @@ export default {
     console.log(this.$store.getters.getStorage.user.userId);
     var userId = this.$store.getters.getStorage.user.userId;
     this.$axios
-      .get(
-        "shopCart/getShopCartByUser?userId=" + userId
-      )
+      .get("shopCart/getShopCartByUser?userId=" + userId)
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         if (res.data.code == 200) {
-          for (let i = 0; i < res.data.length; i++) {
+          for (let i = 0; i < res.data.data.length; i++) {
             //TODO 对每一个货物获取goodsid，购买数量 ，再请求goodsId对应的goods，返回图片，名称，单价，组成items条目
+            console.log(res.data.data[i].goodsId);
+            const cnt = res.data.data[i].goodsNum;
+            this.$axios
+              .get("/goods_detail/find?id=" + res.data.data[i].goodsId)
+              .then((res) => {
+                console.log(res.data[0]);
+                let item = {
+                  id: res.data[0].goodsId,
+                  img: res.data[0].picUrl,
+                  name: res.data[0].goodsName,
+                  price: res.data[0].goodsPrice,
+                  count: cnt,
+                  discount: res.data[0].goodsDiscount,
+                  total: cnt * res.data[0].goodsPrice,
+                  checked: false,
+                };
+                this.items = [...this.items, item];
+              });
           }
         }
       });
@@ -101,33 +119,9 @@ export default {
     return {
       isAllChecked: false,
       total: 0,
+      discount: 0,
       count: 0,
-      items: [
-        {
-          img: "../images/s1.png",
-          name: "经典系列红色时钟",
-          price: 580,
-          count: 1,
-          total: 580,
-          checked: false,
-        },
-        {
-          img: "../images/s2.png",
-          name: "便携简约清扫扫帚",
-          price: 580,
-          count: 1,
-          total: 580,
-          checked: false,
-        },
-        {
-          img: "../images/s3.png",
-          name: "黑色陶瓷研磨器皿",
-          price: 150,
-          count: 1,
-          total: 150,
-          checked: false,
-        },
-      ],
+      items: [],
     };
   },
   methods: {
@@ -152,21 +146,40 @@ export default {
       }
       var cnt = 0;
       var total_price = 0;
+      var total_discount = 0;
       for (var i = 0; i < this.items.length; i++) {
         if (!this.items[i].checked) continue;
 
         cnt += this.items[i].count;
         total_price += this.items[i].total;
+        total_discount += this.items[i].total * (1.0 - this.items[i].discount);
       }
       this.total = total_price;
       this.count = cnt;
+      this.discount = total_discount;
     },
     setItemChecked: function () {},
+    updateShopCart(index) {
+      var userId = this.$store.getters.getStorage.user.userId;
+      var goodsId = this.items[index].id;
+      var goodsNum = this.items[index].count;
+      console.log(userId + " " + goodsId + " " + goodsNum);
+      this.$axios
+        .post("/shopCart/updateShopCart", {
+          userId: userId,
+          goodsId: goodsId,
+          goodsNum: goodsNum,
+        })
+        .then((res) => {
+          console.log(res);
+        });
+    },
     plusCommodity: function (index) {
       this.items[index].count += 1;
       this.items[index].total =
         this.items[index].price * this.items[index].count;
       this.calculateAll();
+      this.updateShopCart(index);
     },
     minusCommodity: function (index) {
       if (this.items[index].count > 0) {
@@ -174,11 +187,61 @@ export default {
         this.items[index].total =
           this.items[index].price * this.items[index].count;
         this.calculateAll();
+        let userId = this.$store.getters.getStorage.user.userId;
+        this.$axios
+          .post("/shopCart/updateShopCart", {
+            userId: userId,
+            goodsId: this.items[index].id,
+            goodsNum: this.items[index].count,
+          })
+          .then((res) => {
+            console.log(res);
+          });
       }
     },
     deleteItem: function (index) {
+      this.$axios
+        .get(
+          "/shopCart/deleteShopCartByUserAndGoodsId?userId=" +
+            this.$store.getters.getStorage.user.userId +
+            "&goodsId=" +
+            this.items[index].id
+        )
+        .then((res) => {
+          console.log(res);
+        });
       this.items.splice(index, 1);
       this.calculateAll();
+    },
+    async generateOrder() {
+      this.$parent.orders = [];
+      var userId = this.$store.getters.getStorage.user.userId;
+      for (let i = 0; i < this.items.length; i++) {
+        if (this.items[i].checked) {
+          var goodsId = this.items[i].id;
+          var goodsNum = this.items[i].count;
+          var goodsPrice = this.items[i].price;
+          var goodsAmount = goodsNum * goodsPrice * this.items[i].discount;
+          console.log(this.items[i].discount);
+          let order = {
+              "userId": userId,
+              "goodsId": goodsId,
+              "goodsNum": goodsNum,
+              "goodsPrice": goodsPrice,
+              "goodsAmount": goodsAmount,
+          }
+          console.log(order);
+          await this.$axios
+            .post("/order_state/insertOrderDetail", order)
+            .then((res) => {
+              console.log(res.data);
+              this.$parent.orders = [...this.$parent.orders, res.data.data];
+            });
+        }
+      }
+      this.$router.push({
+        path:"/accounting"
+      });
     },
   },
 };
