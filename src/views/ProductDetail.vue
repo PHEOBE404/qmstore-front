@@ -4,32 +4,32 @@
       <div class="inter1">
         <div class="inter11">
           <a href="a青竹总界面.html">首页</a> > <a href="">所有商品</a> >
-          <span>简约时尚水泥花瓶</span>
+          <span>{{goodsName}}</span>
         </div>
       </div>
       <div class="inter2">
         <div class="inter21">
-          <a href=""><img src="../images/png2.png" alt="" /></a>
-          <a href="" class="small"><img src="../images/png2.png" alt="" /></a>
+          <a href=""><img :src= picUrl alt="" height="450px" width="450px" /></a>
+          <a href="" class="small"><img :src= picUrl alt="" /></a>
         </div>
         <div class="inter22">
-          <h1>简约时尚水泥花瓶</h1>
-          <p>精选材料，设计大师设计，做工精细，摆件中的艺术品</p>
+          <h1>{{goodsName}}</h1>
+          <p>{{detailDesc}}</p>
           <div class="inter221">
             <span class="s1">￥</span>
-            <span class="s2">450</span>
+            <span class="s2">{{goodsPrice}}</span>
             已售出<span class="s3">0</span>件
           </div>
           <h3>选择数量</h3>
+          
           <div class="inter222">
-            <div class="inter2221">
-              <a href="" class="sub"> - </a>
-              <input type="text" value="1" class="count" />
-              <a href="" class="add">+</a>
-            </div>
+              <template>
+                <el-input-number size="mini" v-model="num" @change="handleChange" :min="1" :max=storage label="描述文字">123123</el-input-number>
+              </template>
+            件
+            <!-- <button class="car" @click="addToCart">加入购物车</button> -->
+            <el-button type="warning" @click="addToCart">加入购物车</el-button>
 
-            件（库存<span>2344</span>件）
-            <a href="购物车.html" class="car">加入购物车</a>
           </div>
         </div>
       </div>
@@ -44,14 +44,71 @@
 export default {
   name: "ProductDetail",
   components: {},
+  data() {
+    return {
+      goodsName: '',
+      goodsPrice: '',
+      picUrl: '',
+      detailDesc: '',
+      num:1,
+      storage: 255,
+      alreadtSale: 123
+    }
+  },
   created() {
-    this.$http.post
+    this.$axios.get('goods_detail/find?id=' + this.$route.query.id)
+      .then((res) => {
+        this.goodsName = res.data[0].goodsName;
+        this.picUrl = res.data[0].picUrl;
+        this.goodsPrice = res.data[0].goodsPrice;
+        this.detailDesc = res.data[0].detailDesc;
+        console.log(res)
+      }),
+
+    this.$axios.get('order_state/getAlreadySale?goodsId=' + this.$route.query.id)
+      .then((res) => {
+        this.alreadtSale = res.data
+        console.log(res)
+      })
+
+    
   },
   mounted() {
-    console.log("log1"+this.$route.path)
-    console.log("log2" + this.$route.params);
-    console.log("log3" + window.location.href );
-    console.log("log4"+ this.$route.query.id);
+    // console.log("log1"+this.$route.path)
+    // console.log("log2" + this.$route.params);
+    // console.log("log3" + window.location.href );
+    // console.log("log4"+ this.$route.query.id);
   },
+  methods: {
+    handleChange(value) {
+      this.num = parseInt(value)
+
+    },
+    addToCart() {
+
+      if(this.$store.getters.getStorage == null || this.$store.getters.getStorage.user.userId == null || this.$store.getters.getStorage.user.userId == ''){
+        this.$router.push({ name: 'Login'})
+      }else{
+        this.$axios.post('shopCart/addShopCart', {
+          userId: this.$store.getters.getStorage.user.userId,
+          goodsId: this.$route.query.id,
+          goodsNum: this.num
+
+        }).then((res) => {
+              if (res.data.code == 200) {
+                this.$notify({
+                  title: '成功',
+                  message: '商品已经加入购物车',
+                  type: 'success',
+                  duration: 1000,
+                });
+              } else {
+                console.log(res.data.error)
+                alert(res.data.error);
+              }
+            });
+      }
+    }
+  }
 };
 </script>
