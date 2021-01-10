@@ -214,7 +214,7 @@ export default {
       this.calculateAll();
     },
     async generateOrder() {
-      this.$parent.orders = [];
+      this.$root.orders = [];
       var userId = this.$store.getters.getStorage.user.userId;
       for (let i = 0; i < this.items.length; i++) {
         if (this.items[i].checked) {
@@ -235,7 +235,7 @@ export default {
             .post("/order_state/insertOrderDetail", order)
             .then((res) => {
               console.log(res.data);
-              this.$parent.orders = [...this.$parent.orders, res.data.data];
+              this.$root.orders = [...this.$root.orders, res.data.data];
             });
         }
       }
