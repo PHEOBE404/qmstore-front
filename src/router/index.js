@@ -7,6 +7,9 @@ import Register from '../views/Register.vue'
 import Cart from '../views/Cart.vue'
 import Accounting from '../views/Accounting.vue'
 import ProductDetail from '../views/ProductDetail'
+import User from '../views/User'
+import Order from '../components/Order'
+import Profile from '../components/Profile'
 Vue.use(VueRouter)
 
 const routes = [
@@ -44,6 +47,21 @@ const routes = [
     path: '/accounting',
     name: 'Accounting',
     component: Accounting
+  },
+  {
+    path: '/user',
+    name: 'User',
+    component: User,
+    children:[
+      {
+        path:"profile",
+        component:Profile
+      },
+      {
+        path:"order",
+        component:Order
+      }
+    ]
   }
 ]
 
