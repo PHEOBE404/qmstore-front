@@ -128,26 +128,26 @@ export default {
   mounted() {
     this.addrs = [];
     var userId = this.$store.getters.getStorage.user.userId;
-    this.$axios.post("/user_address/selectUserAddressByUserId?userId="+userId).then((res)=>{
+    this.$axios.get("/user_address/selectUserAddressByUserId?userId="+userId).then((res)=>{
       console.log(res.data);
       this.addrs = res.data.data;
     });
 
     // this.orders = this.$parent.orders;
-    //console.log( this.$parent.orders);
-    for(let i=0;i<this.$parent.orders.length;i++){
-      console.log(this.$parent.orders[i].userId);
+    console.log( this.$root.orders.length);
+    for(let i=0;i<this.$root.orders.length;i++){
+      console.log(this.$root.orders[i].userId);
       //todo 请求goodsdetail,请求
-      this.$axios.get("/goods_detail/find?id="+this.$parent.orders[i].goodsId).then((res)=>{
+      this.$axios.get("/goods_detail/find?id="+this.$root.orders[i].goodsId).then((res)=>{
         console.log(res.data);
         let order={
-          id:this.$parent.orders[i].userId,
+          id:this.$root.orders[i].orderId,
           img:res.data[0].picUrl,
           name:res.data[0].goodsName,
-          status:this.$parent.orders[i].orderStateDesc,
-          price:this.$parent.orders[i].goodsPrice,
-          count:this.$parent.orders[i].goodsNum,
-          total:this.$parent.orders[i].goodsAmount
+          status:this.$root.orders[i].orderStateDesc,
+          price:this.$root.orders[i].goodsPrice,
+          count:this.$root.orders[i].goodsNum,
+          total:this.$root.orders[i].goodsAmount
         }
         console.log("订单");
         console.log(order);

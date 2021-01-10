@@ -17,12 +17,13 @@
             <router-link to="/register">注册</router-link>
           </span>
           <span v-if="this.$store.getters.getStorage != null">
-            <router-link to="/user">{{ this.$store.getters.getStorage.user.userId }} | 个人中心</router-link>
-            <el-button type="danger" round @click="logout">退出</el-button>
+            <router-link to="/user/profile">{{ this.$store.getters.getStorage.user.userId }} | 个人中心</router-link>
+            
             <router-link to="/cart"
               ><i class="icon iconfont icon-gouwuche" id="shop"></i
-              >0</router-link
+              ></router-link
             >
+            <el-button type="danger" round @click="logout">退出</el-button>
           </span>
         </div>
         <div class="shop">
