@@ -48,7 +48,7 @@ export default {
           this.$store.getters.getStorage.user.userId
       )
       .then((res) => {
-        console.log(res.data.data);
+        console.log(res.data);
         for (let i = 0; i < res.data.data.length; i++) {
           this.$axios
             .get("/goods_detail/find?id=" + res.data.data[i].goodsId)
@@ -99,7 +99,7 @@ export default {
       console.log(index, row);
       this.$axios.get("/order_state/deleteByOrderId?orderId="+row.id).then((res)=>{
           console.log(res);
-          this.reload();
+          this.orders.splice(index,1);
       });
     },
   },
