@@ -147,7 +147,8 @@ export default {
           status:this.$root.orders[i].orderStateDesc,
           price:this.$root.orders[i].goodsPrice,
           count:this.$root.orders[i].goodsNum,
-          total:this.$root.orders[i].goodsAmount
+          total:this.$root.orders[i].goodsAmount,
+          goodsId : this.$root.orders[i].goodsId
         }
         console.log("订单");
         console.log(order);
@@ -176,14 +177,16 @@ export default {
   methods:{
     payment(){
       if(this.value == ''){
-        for(let item in this.orders){
+        for(let i = 0; i < this.orders.length; i++){
+                      console.log(this.orders[i]);
+
           this.$axios.post("/order_state/updateOrderDetail",{
-            orderId : item.orderId,
-            userId : item.userId,
-            goodsId : item.goodsId,
-            goodsNum : item.goodsNum,
-            goodsPrice : item.goodsPrice,
-            goodsAmount : item.goodsAmount,
+            orderId : this.orders[i].id,
+            userId : this.$store.getters.getStorage.user.userId,
+            goodsId : this.orders[i].goodsId,
+            goodsNum : this.orders[i].count,
+            goodsPrice : this.orders[i].price,
+            goodsAmount : this.orders[i].total,
             orderStateCode : '03',
             orderStateDesc : 'paid_unfinished',
             address : this.newAddress.newName + ' ' + this.newAddress.newPhone + ' ' + this.newAddress.address
@@ -192,27 +195,31 @@ export default {
           console.log(res)
         })
         }
+        console.log("address" + this.newAddress)
         this.$axios.post("user_address/insertUserAddress", { 
-          userId : this.orders[0].userId,
+          userId : this.$store.getters.getStorage.user.userId,
           address : this.newAddress.address,
-          userName : this.newAddress.userName,
-          userPhone : this.newAddress.userPhone
+          userName : this.newAddress.newName,
+          userPhone : this.newAddress.newPhone
         })
         .then((res) => {
           console.log(res)
         })
       }else{
-          for(let item in this.orders){
+          for(let i in this.orders){
           this.$axios.post("/order_state/updateOrderDetail",{
-            orderId : item.orderId,
-            userId : item.userId,
-            goodsId : item.goodsId,
-            goodsNum : item.goodsNum,
-            goodsPrice : item.goodsPrice,
-            goodsAmount : item.goodsAmount,
+            orderId : this.orders[i].id,
+            userId : this.$store.getters.getStorage.user.userId,
+            goodsId : this.orders[i].goodsId,
+            goodsNum : this.orders[i].count,
+            goodsPrice : this.orders[i].price,
+            goodsAmount : this.orders[i].total,
             orderStateCode : '03',
             orderStateDesc : 'paid_unfinished',
             address : this.value
+        })
+        .then((res) => {
+          console.log(res)
         })
         }
       }

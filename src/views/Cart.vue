@@ -182,7 +182,7 @@ export default {
       this.updateShopCart(index);
     },
     minusCommodity: function (index) {
-      if (this.items[index].count > 0) {
+      if (this.items[index].count > 1) {
         this.items[index].count -= 1;
         this.items[index].total =
           this.items[index].price * this.items[index].count;
