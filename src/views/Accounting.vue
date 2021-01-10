@@ -175,7 +175,48 @@ export default {
   },
   methods:{
     payment(){
-
+      if(this.value == ''){
+        for(let item in this.orders){
+          this.$axios.post("/order_state/updateOrderDetail",{
+            orderId : item.orderId,
+            userId : item.userId,
+            goodsId : item.goodsId,
+            goodsNum : item.goodsNum,
+            goodsPrice : item.goodsPrice,
+            goodsAmount : item.goodsAmount,
+            orderStateCode : '03',
+            orderStateDesc : 'paid_unfinished',
+            address : this.newAddress.newName + ' ' + this.newAddress.newPhone + ' ' + this.newAddress.address
+        })
+        .then((res) => {
+          console.log(res)
+        })
+        }
+        this.$axios.post("user_address/insertUserAddress", { 
+          userId : this.orders[0].userId,
+          address : this.newAddress.address,
+          userName : this.newAddress.userName,
+          userPhone : this.newAddress.userPhone
+        })
+        .then((res) => {
+          console.log(res)
+        })
+      }else{
+          for(let item in this.orders){
+          this.$axios.post("/order_state/updateOrderDetail",{
+            orderId : item.orderId,
+            userId : item.userId,
+            goodsId : item.goodsId,
+            goodsNum : item.goodsNum,
+            goodsPrice : item.goodsPrice,
+            goodsAmount : item.goodsAmount,
+            orderStateCode : '03',
+            orderStateDesc : 'paid_unfinished',
+            address : this.value
+        })
+        }
+      }
+      
     }
   }
 };

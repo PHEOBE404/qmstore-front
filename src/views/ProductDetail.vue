@@ -103,7 +103,7 @@ export default {
                   duration: 1000,
                 });
               } else {
-                console.log(res.data.error)
+                console.log(res.data)
                 alert(res.data.error);
               }
             });
